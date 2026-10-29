@@ -139,6 +139,9 @@ def predict_sales_batch():
     product_ids = input_data['id'].tolist() if 'id' in input_data else list(range(len(input_data)))
     model_input = input_data.drop(columns=['id'], errors='ignore')
 
+    # Enforce correct column order to align with preprocessing pipeline
+    model_input = model_input[MODEL_FEATURES]
+
     # Make predictions for all products in the DataFrame
     predicted_sales = model.predict(model_input).tolist()
     output_dict = dict(zip(product_ids, predicted_sales))
